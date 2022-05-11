@@ -5,70 +5,93 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-  public static void main(String[] args) {
-    final String IP = "127.0.0.1";
-    final int PORT = 12345;
-    Socket socket;
-    PrintStream output = null;
-    Scanner teclado = null;
-    String nome;
-    int jogo = 0;
-    boolean accept = false;
+    public static void main(String[] args) {
 
-    // criação do socket e pedido de conexão
-    try {
-      socket = new Socket(IP, PORT);
-    } catch (Exception e) {
-      System.out.println("Não foi possível se conectar ao servidor!");
-      return;
-    }
+        final String IP = "127.0.0.1";
+        final int PORT = 1234;
+        Socket socket;
+        Scanner teclado = null;
+        Scanner entrada = new Scanner(System.in);
+        Scanner input = null;
+        PrintStream output = null;
+        char escolha;
+        boolean accept = false;
 
-    // fase de comunicação
-    try{
-      output = new PrintStream(socket.getOutputStream());
-      teclado = new Scanner(System.in);
-
-      System.out.println("*********************************");
-      System.out.println("********** Jokenpo UAM **********");
-      System.out.println("*********************************");
-
-      System.out.println("Digite o seu nome:");
-      nome = teclado.nextLine();
-      System.out.println("Seja bem vindo(a) "+ nome);
-      
-      do{
-        System.out.println("Você deseja jogar contra CPU ou outro Jogador?");
-        System.out.println("digite 1 - vs CPU | digite 2 - vs Jogador");
-        jogo = Integer.parseInt(teclado.nextLine());
-
-        if(jogo == 1){
-          System.out.println("Você jogará contra a CPU! Boa Sorte!!");
-          accept = true;
-        }if(jogo == 2){
-          System.out.println("Você jogará contra a Outro jogador! Boa Sorte!!");
-          accept = true;
+        try {
+            socket = new Socket(IP, PORT);
+            System.out.println("***************************");
+            System.out.println("* Bem vindo(a) ao Jokenpo *");
+            System.out.println("***************************");
+        } catch (Exception e) {
+            System.out.println("Não foi possivel conectar ao servidor.");
+            entrada.close();
+            return;
         }
-      }while (!accept);
 
+        // fase de escolha do modo de jogo
+        try {
+            output = new PrintStream(socket.getOutputStream());
+            do {
+              System.out.println("Faça sua ecolha:");
+              System.out.println("(1) - para jogar contra CPU | (2) - para jogar online");
+              escolha = entrada.nextLine().charAt(0);
+              output.println(escolha);
+              if(escolha == '1'){
+                System.out.println("Você jogará contra a CPU! Boa sorte!\n");
+                accept = true;
+              }else if(escolha == '2'){
+                System.out.println("Você jogará outro jogador! Boa sorte!\n");
+                accept = true;
+              }else{
+                System.out.println("Comando não identificado!\n");
+              }
+              
+            } while (!accept);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
-      String msg;
+        // fase de comunicação
+        try {
+            input = new Scanner(socket.getInputStream());
+            output = new PrintStream(socket.getOutputStream());
+            teclado = new Scanner(System.in);
+            // Escuta escuta = new Escuta(socket);
+            // escuta.start();
 
-      do {
-        System.out.println("Digite uma mensagem: ");
-        msg = teclado.nextLine();
-      } while (!msg.equalsIgnoreCase("exit"));
+            String msg;
+            String resultado;
+            String escolhaCPU;
+            String placar;
+            do {
+                System.out.print("Digite: (0) - Pedra | (1) - Papel | (2) - Tesoura | (exit) - Sair \n");
+                msg = teclado.nextLine();
+                output.println(msg);
+                escolhaCPU = input.nextLine();
+                System.out.println(escolhaCPU);
+                resultado = input.nextLine();
+                System.out.println(resultado);
+                placar = input.nextLine();
+                System.out.println(placar);
+            } while (!msg.equalsIgnoreCase("exit"));
 
-    }catch (Exception e){
-      System.out.println(e.getMessage());
+            // escuta.parar();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // fase de encerramento a conexão
+        try {
+            input.close();
+            entrada.close();
+            output.close();
+            teclado.close();
+            socket.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
-    // fase de encerramento da conexão
-    try{
-      output.close();
-      socket.close();
-    }catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
-  }
 }
