@@ -4,6 +4,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
+import jokenpo.threads.Multiplayer;
+import jokenpo.threads.Singleplayer;
+
 public class Server {
     public static void main(String[] args) {
         final int PORT = 1234;

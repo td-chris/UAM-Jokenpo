@@ -1,4 +1,4 @@
-package jokenpo.server;
+package jokenpo.threads;
 
 import java.io.PrintStream;
 import java.net.Socket;
