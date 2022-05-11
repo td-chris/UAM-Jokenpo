@@ -1,4 +1,4 @@
-package jokenpo.server;
+package jokenpo.threads;
 
 import java.io.PrintStream;
 import java.net.Socket;
@@ -12,8 +12,16 @@ public class Multiplayer extends Thread {
     private Scanner input2 = null;
     private PrintStream output = null;
     private PrintStream output2 = null;
-    int empate = 0, vitoria = 0, derrota = 0;
-    int empate2 = 0, vitoria2 = 0, derrota2 = 0;
+
+    // variaveis player 1
+    int empate = 0;
+    int vitoria = 0; 
+    int derrota = 0;
+    
+    // variaveis player 1
+    int empate2 = 0;
+    int vitoria2 = 0;
+    int derrota2 = 0;
 
     public Multiplayer(Socket socket, Socket socket2) {
         this.cliente = socket;
@@ -36,10 +44,12 @@ public class Multiplayer extends Thread {
               msg = input.nextLine();
                 System.out.println("Escolha do jogador 1: " + msg);
                 if (msg.equalsIgnoreCase("exit")){
+                  output2.println("Jogador 1 saiu!");
                   jogar = false;
                 }
                 msg2 = input2.nextLine();
                 if (msg2.equalsIgnoreCase("exit")){
+                  output.println("Jogador 2 saiu!");
                   jogar = false;
                 }
                 System.out.println("Escolha do jogador 2: " + msg2);

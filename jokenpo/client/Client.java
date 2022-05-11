@@ -56,8 +56,6 @@ public class Client {
             input = new Scanner(socket.getInputStream());
             output = new PrintStream(socket.getOutputStream());
             teclado = new Scanner(System.in);
-            // Escuta escuta = new Escuta(socket);
-            // escuta.start();
 
             String msg;
             String resultado;
@@ -75,7 +73,6 @@ public class Client {
                 System.out.println(placar);
             } while (!msg.equalsIgnoreCase("exit"));
 
-            // escuta.parar();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
